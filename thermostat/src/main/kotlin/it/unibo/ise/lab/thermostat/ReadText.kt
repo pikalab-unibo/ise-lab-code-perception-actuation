@@ -15,16 +15,16 @@ object ReadText : BinaryRelation.Functional<ExecutionContext>("read_text") {
     override fun Solve.Request<ExecutionContext>.computeOneSubstitution(first: Term, second: Term): Substitution {
         ensuringArgumentIsAtom(0)
         val path = File((first as Atom).value)
-        if (path.exists() && path.isFile && path.canRead()) {
+        return if (path.exists() && path.isFile && path.canRead()) {
             try {
                 val text = path.readText()
                 val term = TermParser.withOperators(context.operators).parseTerm(text)
-                return second mguWith term
+                second mguWith term
             } catch (_: IOException) {
-                return Substitution.failed()
+                Substitution.failed()
             }
         } else {
-            return Substitution.failed()
+            Substitution.failed()
         }
     }
 }

@@ -3,7 +3,6 @@ package it.unibo.ise.lab.thermostat
 import it.unibo.tuprolog.core.*
 import it.unibo.tuprolog.solve.Solution
 import it.unibo.tuprolog.solve.Solver
-import it.unibo.tuprolog.solve.library.Libraries
 import java.io.File
 import java.util.UUID
 import kotlin.random.Random
@@ -40,7 +39,7 @@ class TestReadText {
     @Test
     fun testReadFailure() {
         val file = TempFiles.next().parentFile.resolve("missing.txt")
-        val solver = Solver.prolog.solverOf(Libraries.of(AgentLib))
+        val solver = Solver.prolog.solverOf(libraries = AgentLib)
 
         assertFalse { file.exists() }
         val solutions = solver.solve(Struct.of("read_text", Atom.of(file.absolutePath), Var.anonymous())).toList()
@@ -50,7 +49,7 @@ class TestReadText {
 
     @Suppress("LocalVariableName")
     private fun testReading(file: File, value: Term) {
-        val solver = Solver.prolog.solverOf(Libraries.of(AgentLib))
+        val solver = Solver.prolog.solverOf(libraries = AgentLib)
         val path = Atom.of(file.absolutePath)
         val content = value.toString()
 

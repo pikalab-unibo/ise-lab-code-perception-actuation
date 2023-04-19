@@ -5,7 +5,6 @@ import it.unibo.tuprolog.core.Struct
 import it.unibo.tuprolog.core.parsing.TermReader
 import it.unibo.tuprolog.solve.Solution
 import it.unibo.tuprolog.solve.Solver
-import it.unibo.tuprolog.solve.library.Libraries
 import java.io.File
 import java.util.UUID
 import kotlin.test.*
@@ -31,7 +30,7 @@ class TestWriteText {
     }
 
     private fun testWriting(file: File, value: UUID) {
-        val solver = Solver.prolog.solverOf(Libraries.of(AgentLib))
+        val solver = Solver.prolog.solverOf(libraries = AgentLib)
         val path = Atom.of(file.absolutePath)
         val content = Atom.of(value.toString())
 
@@ -39,6 +38,6 @@ class TestWriteText {
         val solutions = solver.solve(Struct.of("write_text", path, content)).toList()
         assertEquals(1, solutions.size)
         assertIs<Solution.Yes>(solutions[0])
-        assertEquals(content, TermReader.withNoOperator.readTerm(file.inputStream()))
+        assertEquals(content, TermReader.withNoOperator().readTerm(file.inputStream()))
     }
 }

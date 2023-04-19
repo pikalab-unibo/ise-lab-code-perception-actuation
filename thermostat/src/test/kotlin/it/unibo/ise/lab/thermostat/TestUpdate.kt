@@ -4,7 +4,6 @@ import it.unibo.tuprolog.core.Struct
 import it.unibo.tuprolog.core.parsing.parse
 import it.unibo.tuprolog.solve.Solution
 import it.unibo.tuprolog.solve.Solver
-import it.unibo.tuprolog.solve.library.Libraries
 import it.unibo.tuprolog.theory.Theory
 import it.unibo.tuprolog.theory.parsing.parse
 import kotlin.test.Test
@@ -22,10 +21,7 @@ class TestUpdate {
 
     @Test
     fun testSuccessfulUpdate() {
-        val solver = Solver.prolog.solverOf(
-            dynamicKb = testTheory,
-            libraries = Libraries.of(AgentLib)
-        )
+        val solver = Solver.prolog.solverOf(dynamicKb = testTheory, libraries = AgentLib)
         val query = Struct.parse("update(f(a)), update(f(b)), update(f(c))")
 
         val solutions = solver.solve(query).toList()
@@ -44,7 +40,7 @@ class TestUpdate {
 
     @Test
     fun testFailingUpdate() {
-        val solver = Solver.prolog.solverOf(Libraries.of(AgentLib))
+        val solver = Solver.prolog.solverOf(libraries = AgentLib)
         val query = Struct.parse("update(f(a))")
 
         val solutions = solver.solve(query).toList()

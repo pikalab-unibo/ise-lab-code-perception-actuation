@@ -12,16 +12,16 @@ object WriteText : BinaryRelation.Predicative<ExecutionContext>("write_text") {
     override fun Solve.Request<ExecutionContext>.compute(first: Term, second: Term): Boolean {
         ensuringArgumentIsAtom(0)
         val path = File((first as Atom).value)
-        if (path.canWrite()) {
+        return if (path.canWrite()) {
             try {
                 val text = second.toString()
                 path.writeText(text)
-                return true
+                true
             } catch (_: IOException) {
-                return false
+                false
             }
         } else {
-            return false
+            false
         }
     }
 

@@ -1,11 +1,5 @@
 plugins {
-    id("com.gradle.enterprise") version "3.12.3"
-}
-
-enableFeaturePreview("VERSION_CATALOGS")
-
-dependencyResolutionManagement {
-//    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    id("com.gradle.enterprise") version "3.13"
 }
 
 rootProject.name = "ise-lab-code-perception-actuation"
