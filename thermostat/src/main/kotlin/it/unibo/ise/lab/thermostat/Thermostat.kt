@@ -10,12 +10,15 @@ import java.io.File
 
 object Thermostat {
 
-    private val environment = File(this::class.java.getResource("environment.txt")!!.file)
+    private val environment = File.createTempFile("environment", ".txt").let {
+        this::class.java.getResource("environment.txt")?.file?.let(::File)?.copyTo(it, true)
+    }?.also { it.deleteOnExit() } ?: error("Cannot create environment file")
 
-    private val specification = this::class.java.getResource("thermostat.pl")!!
-        .readText()
-        .replace("/path/to/environment.txt", environment.absolutePath)
-        .let { ClausesParser.withStandardOperators().parseTheory(it) }
+    private val specification = this::class.java.getResource("thermostat.pl")
+        ?.readText()
+        ?.replace("/path/to/environment.txt", environment.absolutePath)
+        ?.let { ClausesParser.withStandardOperators().parseTheory(it) }
+        ?: error("Cannot read thermostat specification")
 
     @JvmStatic
     fun main(args: Array<String>) {
